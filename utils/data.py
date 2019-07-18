@@ -21,7 +21,6 @@ class Data:
         self.norm_biword_emb = True
         self.word_alphabet = Alphabet('word')
         self.biword_alphabet = Alphabet('biword')
-        self.char_alphabet = Alphabet('character')
         self.pos_alphabet = Alphabet('pos')
         self.label_alphabet = Alphabet('label', True)
 
@@ -40,26 +39,22 @@ class Data:
         self.use_bigram = False
         self.word_emb_dim = 50
         self.biword_emb_dim = 50
-        self.char_emb_dim = 30
 
         self.pretrain_word_embedding = None
         self.pretrain_biword_embedding = None
-        self.pretrain_gaz_embedding = None
         self.label_size = 0
         self.word_alphabet_size = 0
         self.biword_alphabet_size = 0
-        self.char_alphabet_size = 0
         self.label_alphabet_size = 0
         #  hyperparameters
         self.HP_iteration = 100
-        self.HP_batch_size = 10
+        self.HP_batch_size = 16
         self.HP_char_hidden_dim = 50
         self.HP_hidden_dim = 200
         self.HP_dropout = 0.2
         self.HP_lstmdropout = 0.5
         self.HP_lstm_layer = 1
         self.HP_bilstm = True
-        self.HP_use_char = False
         self.HP_gpu = False
         self.HP_lr = 0.015
         self.HP_lr_decay = 0.05
@@ -99,15 +94,13 @@ class Data:
         print("     MAX   WORD   LENGTH: %s" % (self.MAX_WORD_LENGTH))
         print("     Number   normalized: %s" % (self.number_normalized))
         print("     Use          bigram: %s" % (self.use_bigram))
-        print("     Word  alphabet size: %s" % (self.word_alphabet_size))
-        print("     Biword alphabet size: %s" % (self.biword_alphabet_size))
-        print("     Char  alphabet size: %s" % (self.char_alphabet_size))
+        print("     Char  alphabet size: %s" % (self.word_alphabet_size))
+        print("     BiChar alphabet size: %s" % (self.biword_alphabet_size))
         print("     Label alphabet size: %s" % (self.label_alphabet_size))
-        print("     Word embedding size: %s" % (self.word_emb_dim))
-        print("     Biword embedding size: %s" % (self.biword_emb_dim))
-        print("     Char embedding size: %s" % (self.char_emb_dim))
-        print("     Norm     word   emb: %s" % (self.norm_word_emb))
-        print("     Norm     biword emb: %s" % (self.norm_biword_emb))
+        print("     Char embedding size: %s" % (self.word_emb_dim))
+        print("     BiChar embedding size: %s" % (self.biword_emb_dim))
+        print("     Norm     char   emb: %s" % (self.norm_word_emb))
+        print("     Norm     bichar emb: %s" % (self.norm_biword_emb))
         print("     Train instance number: %s" % (len(self.train_texts)))
         print("     Dev   instance number: %s" % (len(self.dev_texts)))
         print("     Test  instance number: %s" % (len(self.test_texts)))
@@ -147,11 +140,9 @@ class Data:
                 else:
                     biword = word + NULLKEY
                 self.biword_alphabet.add(biword)
-                for char in word:
-                    self.char_alphabet.add(char)
+
         self.word_alphabet_size = self.word_alphabet.size()
         self.biword_alphabet_size = self.biword_alphabet.size()
-        self.char_alphabet_size = self.char_alphabet.size()
         self.label_alphabet_size = self.label_alphabet.size()
         startS = False
         startB = False
@@ -169,7 +160,6 @@ class Data:
     def fix_alphabet(self):
         self.word_alphabet.close()
         self.biword_alphabet.close()
-        self.char_alphabet.close()
         self.label_alphabet.close()
 
     def build_word_pretrain_emb(self, emb_path):

@@ -144,7 +144,7 @@ def evaluate(data, model, name, external_pos={}):
     gold_results = []
     ## set model in eval model
     model.eval()
-    batch_size = 128
+    batch_size = 16
     start_time = time.time()
     train_num = len(instances)
     total_batch = train_num // batch_size + 1
@@ -359,7 +359,7 @@ def train(model, data, save_model_dir, seg=True):
 def load_model_decode(model_dir, data, name, gpu, seg=True, external_pos={}):
     data.HP_gpu = gpu
     print("Load Model from file: ", model_dir)
-    model = SeqModel(data)
+    model = CWS(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
     #     model.load_state_dict(torch.load(model_dir), map_location=lambda storage, loc: storage)
@@ -489,7 +489,6 @@ if __name__ == '__main__':
             data.use_bigram = True
             data.HP_lr = 1e-3
             data.HP_dropout = 0.2
-            data.HP_lstmdropout = 0
             data.HP_iteration = 50
             data_initialization(data, train_file, dev_file, test_file)
 

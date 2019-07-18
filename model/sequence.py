@@ -22,7 +22,6 @@ class Seq(nn.Module):
         self.use_attention = data.use_attention
         self.use_transformer = data.use_san
         self.gpu = data.HP_gpu
-        self.use_char = data.HP_use_char
         self.batch_size = data.HP_batch_size
         self.char_hidden_dim = 0
         self.embedding_dim = data.word_emb_dim
