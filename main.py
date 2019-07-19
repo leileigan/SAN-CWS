@@ -489,7 +489,7 @@ if __name__ == '__main__':
             data.use_bigram = True
             data.HP_lr = 1e-3
             data.HP_dropout = 0.2
-            data.HP_iteration = 50
+            data.HP_iteration = 100
             data_initialization(data, train_file, dev_file, test_file)
 
             data.generate_instance(train_file, 'train')
