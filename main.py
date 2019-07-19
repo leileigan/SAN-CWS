@@ -9,7 +9,7 @@ import sys
 import argparse
 import random
 import copy
-import torch
+import torch 
 import gc
 import pickle
 import torch.autograd as autograd
@@ -286,7 +286,7 @@ def train(model, data, save_model_dir, seg=True):
                 sample_loss = 0
             if end % data.HP_batch_size == 0:
                 batch_loss.backward()
-                torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
+                # torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
                 if data.use_warmup_adam:
                     optimizer.step_and_update_lr()
                 else:
@@ -448,8 +448,8 @@ if __name__ == '__main__':
 
     save_model_dir = args.savemodel
     gpu = torch.cuda.is_available()
-    char_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec"
-    bichar_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec"
+    char_emb = "/data/ganleilei/data/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec"
+    bichar_emb = "/data/ganleilei/data/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec"
 
     print("CuDNN:", torch.backends.cudnn.enabled)
     # gpu = False
@@ -485,7 +485,7 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 16
+            data.HP_batch_size = 32
             data.use_bigram = True
             data.HP_lr = 1e-3
             data.HP_dropout = 0.2

@@ -52,7 +52,7 @@ class Data:
         self.HP_char_hidden_dim = 50
         self.HP_hidden_dim = 200
         self.HP_dropout = 0.2
-        self.HP_lstmdropout = 0.5
+        self.HP_lstmdropout = 0
         self.HP_lstm_layer = 1
         self.HP_bilstm = True
         self.HP_gpu = False
