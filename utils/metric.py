@@ -13,7 +13,7 @@ import sys
 import os
 
 
-## input as sentence level labels
+# input as sentence level labels
 def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
     sent_num = len(golden_lists)
     golden_full = []

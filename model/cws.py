@@ -2,9 +2,12 @@ import torch
 import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from model.sequence import Seq
 from model.crf import CRF
+
+seed_num = 100
+torch.manual_seed(seed_num)
+torch.cuda.manual_seed(seed_num)
 
 
 class CWS(nn.Module):

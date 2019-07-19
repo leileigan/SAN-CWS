@@ -13,7 +13,7 @@ class ScheduledOptim():
         # self.init_lr = 0.02
         print('warm up steps: ', n_warmup_steps)
         print('d_model: ', d_model)
-        print('optimizer: ', optimizer)
+        print('init lr: ', self.init_lr)
 
     def step_and_update_lr(self):
         "Step with the inner optimizer"

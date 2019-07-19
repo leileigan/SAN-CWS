@@ -6,6 +6,10 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from allennlp.modules import scalar_mix
 
+seed_num = 100
+torch.manual_seed(seed_num)
+torch.cuda.manual_seed(seed_num)
+
 
 def positional_embedding(x, min_timescale=1.0, max_timescale=1.0e4):
     """ positional embedding """

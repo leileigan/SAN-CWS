@@ -29,6 +29,7 @@ seed_num = 100
 random.seed(seed_num)
 torch.manual_seed(seed_num)
 np.random.seed(seed_num)
+torch.cuda.manual_seed(seed_num)
 
 
 def data_initialization(data, train_file, dev_file, test_file):
@@ -142,9 +143,9 @@ def evaluate(data, model, name, external_pos={}):
     whole_token = 0
     pred_results = []
     gold_results = []
-    ## set model in eval model
+    #  set model in eval model
     model.eval()
-    batch_size = 16
+    batch_size = 64
     start_time = time.time()
     train_num = len(instances)
     total_batch = train_num // batch_size + 1
@@ -159,15 +160,14 @@ def evaluate(data, model, name, external_pos={}):
             continue
         batch_word, batch_biword, batch_wordlen, batch_wordrecover, batch_label, mask, rearrange_instance_texts, batch_pos = \
             batchify_with_label(instance_text, instance, data.HP_gpu)
-        tag_seq = model.forward(rearrange_instance_texts, batch_word, batch_biword, batch_wordlen, mask, batch_pos,
-                                external_pos)
-        # print "tag:",tag_seq
-        pred_label, gold_label = recover_label(tag_seq, batch_label, mask, data.label_alphabet, batch_wordrecover)
-        pred_results += pred_label
-        gold_results += gold_label
+        with torch.no_grad():
+            tag_seq = model.forward(rearrange_instance_texts, batch_word, batch_biword, batch_wordlen, mask, batch_pos, external_pos)
+            pred_label, gold_label = recover_label(tag_seq, batch_label, mask, data.label_alphabet, batch_wordrecover)
+            pred_results += pred_label
+            gold_results += gold_label
     decode_time = time.time() - start_time
     speed = len(instances) / decode_time
-    acc, p, r, f = get_ner_fmeasure(gold_results, pred_results, data.tagScheme)
+    acc, p, r, f = get_ner_fmeasure(gold_results, pred_results)
     return speed, acc, p, r, f, pred_results
 
 
@@ -194,7 +194,7 @@ def batchify_with_label(instance_texts, input_ids_list, gpu):
     word_seq_lengths, word_perm_idx = word_seq_lengths.sort(0, descending=True)
     word_seq_tensor = word_seq_tensor[word_perm_idx]
     biword_seq_tensor = biword_seq_tensor[word_perm_idx]
-    ## not reorder label
+    # not reorder label
     label_seq_tensor = label_seq_tensor[word_perm_idx]
     mask = mask[word_perm_idx]
     _, word_seq_recover = word_perm_idx.sort(0, descending=False)
@@ -248,10 +248,10 @@ def train(model, data, save_model_dir, seg=True):
         whole_token = 0
         data_train = [(ids, text) for ids, text in zip(data.train_Ids, data.train_texts)]
         random.shuffle(data_train)
-        ## set model in train model
+        #  set model in train model
         model.train()
         model.zero_grad()
-        batch_size = data.HP_batch_size  ## current only support batch size = 1 to compulate and accumulate to data.HP_batch_size update weights
+        batch_size = data.HP_batch_size
         batch_id = 0
         train_num = len(data.train_Ids)
         total_batch = train_num // batch_size + 1
@@ -360,13 +360,8 @@ def load_model_decode(model_dir, data, name, gpu, seg=True, external_pos={}):
     data.HP_gpu = gpu
     print("Load Model from file: ", model_dir)
     model = CWS(data)
-    ## load model need consider if the model trained in GPU and load in CPU, or vice versa
-    # if not gpu:
-    #     model.load_state_dict(torch.load(model_dir), map_location=lambda storage, loc: storage)
-    #     # model = torch.load(model_dir, map_location=lambda storage, loc: storage)
-    # else:
+
     model.load_state_dict(torch.load(model_dir))
-    # model = torch.load(model_dir)
 
     print("Decode %s data ..." % (name))
     start_time = time.time()
@@ -448,8 +443,8 @@ if __name__ == '__main__':
 
     save_model_dir = args.savemodel
     gpu = torch.cuda.is_available()
-    char_emb = "/data/ganleilei/data/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec"
-    bichar_emb = "/data/ganleilei/data/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec"
+    char_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec"
+    bichar_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec"
 
     print("CuDNN:", torch.backends.cudnn.enabled)
     # gpu = False
@@ -485,10 +480,10 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 32
+            data.HP_batch_size = 16
             data.use_bigram = True
-            data.HP_lr = 1e-3
-            data.HP_dropout = 0.2
+            data.HP_lr = 1e-2
+            data.HP_dropout = 0.1
             data.HP_iteration = 100
             data_initialization(data, train_file, dev_file, test_file)
 

@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 
+seed_num = 100
+torch.manual_seed(seed_num)
+torch.cuda.manual_seed(seed_num)
+
 
 class CNNModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layer, dropout, gpu=True):
