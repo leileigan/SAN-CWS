@@ -286,14 +286,18 @@ def train(model, data, save_model_dir, seg=True):
                 sample_loss = 0
                 speed, acc, p, r, f, _ = evaluate(data, model, "dev")
                 print("speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f" % (speed, acc, p, r, f))
+                for name, parameter in model.named_parameters():
+                    print('name:', name)
+                    print('parameter: ', parameter)
 
             if end % data.HP_batch_size == 0:
                 batch_loss.backward()
-                # torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
+                torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
                 if data.use_warmup_adam:
                     optimizer.step_and_update_lr()
                 else:
                     optimizer.step()
+
                 model.zero_grad()
                 batch_loss = 0
         temp_time = time.time()
@@ -481,7 +485,7 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 20
+            data.HP_batch_size = 16
             data.use_bigram = True
             data.HP_lr = 1e-2
             data.HP_dropout = 0.1
