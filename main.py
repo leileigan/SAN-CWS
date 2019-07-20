@@ -168,6 +168,7 @@ def evaluate(data, model, name, external_pos={}):
     decode_time = time.time() - start_time
     speed = len(instances) / decode_time
     acc, p, r, f = get_ner_fmeasure(gold_results, pred_results)
+    model.train()
     return speed, acc, p, r, f, pred_results
 
 
@@ -284,15 +285,15 @@ def train(model, data, save_model_dir, seg=True):
                     end, temp_cost, sample_loss, right_token, whole_token, (right_token + 0.) / whole_token))
                 sys.stdout.flush()
                 sample_loss = 0
-                speed, acc, p, r, f, _ = evaluate(data, model, "dev")
-                print("speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f" % (speed, acc, p, r, f))
-                for name, parameter in model.named_parameters():
-                    print('name:', name)
-                    print('parameter: ', parameter)
 
             if end % data.HP_batch_size == 0:
                 batch_loss.backward()
                 torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
+                # if end % 500 == 0:
+                #     for name, parameter in model.named_parameters():
+                #         print('name:', name)
+                #         print('parameter grad: ', parameter.grad)
+
                 if data.use_warmup_adam:
                     optimizer.step_and_update_lr()
                 else:
@@ -485,7 +486,7 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 16
+            data.HP_batch_size = 32
             data.use_bigram = True
             data.HP_lr = 1e-2
             data.HP_dropout = 0.1
