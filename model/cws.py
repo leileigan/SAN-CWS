@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from model.sequence import Seq
 from model.crf import CRF
 
-seed_num = 100
+seed_num = 10
 torch.manual_seed(seed_num)
 torch.cuda.manual_seed(seed_num)
 

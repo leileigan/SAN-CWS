@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from allennlp.modules import scalar_mix
 
-seed_num = 100
+seed_num = 10
 torch.manual_seed(seed_num)
 torch.cuda.manual_seed(seed_num)
 
@@ -252,7 +252,7 @@ def get_attn_padding_mask(seq_q, seq_k, pad):
 class TransformerEncoder(nn.Module):
     """ transformer encoder """
 
-    def __init__(self, data, context_size=250, hidden_size=512, num_layers=2, num_heads=8, inner_linear=2048,
+    def __init__(self, data, context_size=250, hidden_size=512, num_layers=6, num_heads=8, inner_linear=2048,
                  embed_dropout=0.1, residual_dropout=0.1, attention_dropout=0.1, relu_dropout=0.1, pad=0):
         super(TransformerEncoder, self).__init__()
         print("self attention network hyper parameters: ")

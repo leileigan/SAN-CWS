@@ -25,7 +25,7 @@ from utils import functions
 import os
 import datetime
 
-seed_num = 100
+seed_num = 10
 random.seed(seed_num)
 torch.manual_seed(seed_num)
 np.random.seed(seed_num)
@@ -284,6 +284,9 @@ def train(model, data, save_model_dir, seg=True):
                     end, temp_cost, sample_loss, right_token, whole_token, (right_token + 0.) / whole_token))
                 sys.stdout.flush()
                 sample_loss = 0
+                speed, acc, p, r, f, _ = evaluate(data, model, "dev")
+                print("speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f" % (speed, acc, p, r, f))
+
             if end % data.HP_batch_size == 0:
                 batch_loss.backward()
                 # torch.nn.utils.clip_grad_norm_(parameters, data.HP_clip)
@@ -299,8 +302,7 @@ def train(model, data, save_model_dir, seg=True):
             end, temp_cost, sample_loss, right_token, whole_token, (right_token + 0.) / whole_token))
         epoch_finish = time.time()
         epoch_cost = epoch_finish - epoch_start
-        print("Epoch: %s training finished. Time: %.2fs, speed: %.2fst/s,  total loss: %s" % (
-        idx, epoch_cost, train_num / epoch_cost, total_loss))
+        print("Epoch: %s training finished. Time: %.2fs, speed: %.2fst/s,  total loss: %s" % (idx, epoch_cost, train_num / epoch_cost, total_loss))
         # exit(0)
         # continue
         speed, acc, p, r, f, _ = evaluate(data, model, "dev")
@@ -309,8 +311,7 @@ def train(model, data, save_model_dir, seg=True):
 
         if seg:
             current_score = f
-            print("Dev: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f" % (
-            dev_cost, speed, acc, p, r, f))
+            print("Dev: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f" % (dev_cost, speed, acc, p, r, f))
         else:
             current_score = acc
             print("Dev: time: %.2fs speed: %.2fst/s; acc: %.4f" % (dev_cost, speed, acc))
@@ -480,7 +481,7 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 16
+            data.HP_batch_size = 20
             data.use_bigram = True
             data.HP_lr = 1e-2
             data.HP_dropout = 0.1

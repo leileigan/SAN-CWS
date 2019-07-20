@@ -13,7 +13,7 @@ from gensim.models import KeyedVectors
 from utils import functions
 
 CUDA = torch.cuda.is_available()
-seed_num = 100
+seed_num = 10
 torch.cuda.manual_seed(seed_num)
 torch.manual_seed(seed_num)
 torch.cuda.manual_seed_all(seed_num)

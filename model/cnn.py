@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-seed_num = 100
+seed_num = 10
 torch.manual_seed(seed_num)
 torch.cuda.manual_seed(seed_num)
 

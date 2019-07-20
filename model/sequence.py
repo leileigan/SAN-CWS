@@ -10,7 +10,7 @@ import model.transformer as transformer
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
 from model.cnn import CNNModel
 
-seed_num = 100
+seed_num = 10
 torch.manual_seed(seed_num)
 np.random.seed(seed_num)
 torch.cuda.manual_seed(seed_num)
