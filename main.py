@@ -389,7 +389,7 @@ if __name__ == '__main__':
     parser.add_argument('--char_embedding', help='Embedding for chars', default='None')
     parser.add_argument('--bichar_embedding', help='Embedding for bi-chars', default='None')
     parser.add_argument('--status', choices=['train', 'test', 'decode'], help='update algorithm', default='train')
-    parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
+    parser.add_argument('--savemodel', default="data/model/saved_model")
     parser.add_argument('--savedset', help='Dir of saved data setting', default="data/save.dset")
     parser.add_argument('--source', default="data/cross-domain/pd/pku.pos.pre.bmes")
     parser.add_argument('--train', default="data/ctb6.0/origin/train.ctb60.char.bmes")
