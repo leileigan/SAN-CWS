@@ -272,8 +272,10 @@ class TransformerEncoder(nn.Module):
         self.encoder_blocks = nn.ModuleList([EncoderBlock(data.use_window, hidden_size, num_heads, inner_linear, attention_dropout,
                                                           residual_dropout, relu_dropout) for _ in range(num_layers)])
 
+        '''
         self.atten1 = Attention(data, input_size=768)
         self.atten2 = Attention(data, input_size=512)
+        '''
 
     def forward(self, x, src_seq):
         """ input include attend words """
