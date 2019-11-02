@@ -4,7 +4,7 @@ Investigate self-attention network for Chinese Word Segmentation
 Investigate self-attention network for Chinese Word Segmentation. 
 
 Models and results can be found at our paper 
-[Subword Encoding in Lattice LSTM for Chinese Word Segmentation](https://arxiv.org/pdf/1810.12594.pdf). 
+[Investigate self-attention network for Chinese Word Segmentation](https://arxiv.org/abs/1907.11512). 
 
 
 Requirement:
@@ -51,18 +51,15 @@ CoNLL format (prefer BMES tag scheme), with each character its label for one lin
 
 Pretrained Embeddings:
 ====
-The pretrained character and word embeddings are the same with the embeddings in the baseline of [RichWordSegmentor](https://github.com/jiesutd/RichWordSegmentor)
 
 * Character embeddings: [gigaword_chn.all.a2b.uni.ite50.vec](https://pan.baidu.com/s/1pLO6T9D)
 * Character bigram embeddings: [gigaword_chn.all.a2b.bi.ite50.vec](https://pan.baidu.com/s/1pLO6T9D), same folder with character embeddings.
-* Word embeddings: [ctb.50d.vec](https://pan.baidu.com/s/1pLO6T9D)
-* Subword(BPE) embeddings: [zh.wiki.bpe.op200000.d50.w2v.txt](https://nlp.h-its.org/bpemb/zh/zh.wiki.bpe.vs200000.d50.w2v.txt.tar.gz)
 
 How to run the code?
 ====
-1. Download the character embeddings, character bigram embeddings, BPE (or word) embeddings and set their directories in [`main.py`](https://github.com/jiesutd/SubwordEncoding-CWS/blob/41d6671ecac8209901f77001bf68d33b8b128e01/main.py#L395).
-2. Modify the `run_seg.py` by adding your train/dev/test file directory.
-3. `sh run_seg.py`
+1. Download the character embeddings, character bigram embeddings and set their directories in [`main.py`](https://github.com/jiesutd/SubwordEncoding-CWS/blob/41d6671ecac8209901f77001bf68d33b8b128e01/main.py#L395).
+2. Modify the `run_seg.sh` by adding your train/dev/test file directory.
+3. `sh run_seg.sh`
 
 
 
@@ -70,9 +67,9 @@ Cite:
 ========
 Cite our paper as:
 
-    @article{yang2018subword,  
-     title={Subword Encoding in Lattice LSTM for Chinese Word Segmentation},  
-     author={Jie Yang, Yue Zhang, and Shuailong Liang},  
-     booktitle={Arxiv},
-     year={2018}  
+    @article{gan2019investigating,
+      title={Investigating Self-Attention Network for Chinese Word Segmentation},
+      author={Gan, Leilei and Zhang, Yue},
+      journal={arXiv preprint arXiv:1907.11512},
+      year={2019}
     }
