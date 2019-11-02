@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-from allennlp.modules import scalar_mix
+
 from model.word_attention import Attention
 
 seed_num = 10

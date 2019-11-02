@@ -386,6 +386,8 @@ if __name__ == '__main__':
     print(datetime.datetime.now())
     parser = argparse.ArgumentParser(description='Investigate Self Attention Network for Chinese Word Segmentation')
     parser.add_argument('--embedding', help='Embedding for words', default='None')
+    parser.add_argument('--char_embedding', help='Embedding for chars', default='None')
+    parser.add_argument('--bichar_embedding', help='Embedding for bi-chars', default='None')
     parser.add_argument('--status', choices=['train', 'test', 'decode'], help='update algorithm', default='train')
     parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
     parser.add_argument('--savedset', help='Dir of saved data setting', default="data/save.dset")
@@ -449,8 +451,8 @@ if __name__ == '__main__':
 
     save_model_dir = args.savemodel
     gpu = torch.cuda.is_available()
-    char_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec"
-    bichar_emb = "/data/ganleilei/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec"
+    char_emb = args.char_embedding
+    bichar_emb = args.bichar_embedding
 
     print("CuDNN:", torch.backends.cudnn.enabled)
     # gpu = False
