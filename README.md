@@ -9,7 +9,7 @@ Models and results can be found at our paper
 
 Requirement:
 ======
-	Python: 3.6   
+	Python: 3.6.2  
 	PyTorch: 1.0.1 
 
 
