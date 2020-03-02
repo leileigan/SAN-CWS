@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
-# @Last Modified by:   Leilei Gan,     Contact: ganleilei@westlake.edu.cn
+# @Last Modified by:   Leilei Gan,     Contact: 11921071@zju.edu.cn
 # @Last Modified time: 2019-04-19 22:29:08
 
 import time
