@@ -16,8 +16,7 @@ np.random.seed(seed_num)
 torch.cuda.manual_seed(seed_num)
 
 
-BERT_TOKEN_PATH = '../data/bert/bert-base-chinese-vocab.txt'
-BERT_MODEL_PATH = '../data/bert/'
+BERT_MODEL_PATH = '/home/ganleilei/data/data/chinese_L-12_H-768_A-12/'
 
 
 class Seq(nn.Module):
@@ -88,13 +87,13 @@ class Seq(nn.Module):
             self.hidden2tag = nn.Linear(data.HP_hidden_dim, data.label_alphabet_size)
 
         if self.use_bert:
-            self.tokenizer = BertTokenizer.from_pretrained(BERT_TOKEN_PATH)
+            self.tokenizer = BertTokenizer.from_pretrained(BERT_MODEL_PATH)
             self.bert_model = BertModel.from_pretrained(BERT_MODEL_PATH)
             bert_params = list(self.bert_model.named_parameters())
-            self.bert_model.eval()
+            self.bert_model.train()
             self.bert_model.cuda()
             for p in bert_params:
-                p[1].requires_grad = False
+                p[1].requires_grad = True
 
         if self.gpu:
             print('begin copying data to gpu')
