@@ -1,11 +1,11 @@
 CUDA_VISIBLE_DEVICES=0 python main.py \
-                       --char_embedding ../NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec \
-                       --bichar_embedding ../NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec \
+                       --char_embedding /home/ganleilei/data/data/NeuralSegmentation/gigaword_chn.all.a2b.uni.ite50.vec \
+                       --bichar_embedding /home/ganleilei/data/data/NeuralSegmentation/gigaword_chn.all.a2b.bi.ite50.vec \
                        --status train \
-                       --train ../data/ctb6.0/origin/train.ctb60.char.bmes \
-                       --dev ../data/ctb6.0/origin/dev.ctb60.char.bmes \
-                       --test ../data/ctb6.0/origin/test.ctb60.char.bmes \
+                       --train ../SubWordCWS/data/ctb6.0/origin/train.ctb60.char.bmes \
+                       --dev ../SubWordCWS/data/ctb6.0/origin/dev.ctb60.char.bmes \
+                       --test ../SubWordCWS/data/ctb6.0/origin/test.ctb60.char.bmes \
                        --use_san true \
-                       --use_warmup_adam true \
                        --use_window true \
-                       --savemodel model/save.model
+                       --savemodel ../cws_models/save.model \
+                       --use_bert true

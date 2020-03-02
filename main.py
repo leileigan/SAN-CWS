@@ -488,7 +488,7 @@ if __name__ == '__main__':
             print('new train parameter')
             data = Data()
             data.HP_gpu = gpu
-            data.HP_batch_size = 32
+            data.HP_batch_size = 1
             data.use_bigram = True
             data.HP_lr = 1e-2
             data.HP_dropout = 0.1
