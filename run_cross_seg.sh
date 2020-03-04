@@ -6,6 +6,10 @@ CUDA_VISIBLE_DEVICES=1 python main.py \
                        --dev ../SubWordCWS/data/ctb6.0/origin/dev.ctb60.char.bmes \
                        --test ../SubWordCWS/data/ctb6.0/origin/test.ctb60.char.bmes \
                        --use_san false \
-                       --use_window true \
+                       --use_attention true \
                        --savemodel /mnt/data/ganleilei/models/cws_models/save.model \
-                       --use_bert true
+                       --use_bert true \
+                       --cross_domain true \
+                       --pos_to_idx ../SubWordCWS/data/pos_count \
+                       --token_replace_prob ../SubWordCWS/data/pd.prob \
+                       --dropout 0.4

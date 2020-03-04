@@ -16,7 +16,7 @@ np.random.seed(seed_num)
 torch.cuda.manual_seed(seed_num)
 
 
-BERT_MODEL_PATH = '/home/ganleilei/data/data/chinese_L-12_H-768_A-12/'
+BERT_MODEL_PATH = '/mnt/data/ganleilei/chinese_L-12_H-768_A-12/'
 
 
 class Seq(nn.Module):

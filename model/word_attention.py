@@ -9,7 +9,6 @@ import torch.autograd as autograd
 import numpy as np
 import random
 import torch.nn.functional as F
-from gensim.models import KeyedVectors
 from utils import functions
 
 CUDA = torch.cuda.is_available()
@@ -41,7 +40,8 @@ class Attention(nn.Module):
         self.pos_to_idx = data.pos_to_idx
         self.use_tencent_dic = data.use_tencent_dic if hasattr(data, "use_tencent_dic") else False
 
-        self.tencent_vec, self.tencent_dic = functions.load_tencent_dic()
+        if self.use_tencent_dic:
+            self.tencent_vec, self.tencent_dic = functions.load_tencent_dic()
 
         self.pos_bem_to_idx = {}
         for pos in self.pos_to_idx:

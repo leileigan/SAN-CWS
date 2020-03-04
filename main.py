@@ -227,7 +227,7 @@ def train(model, data, save_model_dir, seg=True):
     elif data.use_adadelta:
         optimizer = optim.Adadelta(parameters, lr=1e-4, rho=0.95, eps=1e-6)
     elif data.use_bert:
-        optimizer = optim.Adam(parameters, lr=5e-6)  # fine tuning
+        optimizer = optim.Adam(parameters, lr=5e-6, weight_decay=1e-4)  # fine tuning
     else:
         raise ValueError("Unknown optimizer")
 
@@ -342,8 +342,8 @@ def train(model, data, save_model_dir, seg=True):
 
         if data.cross_domain or data.cross_test:
             for domain in ['zx', 'fr', 'dl']:
-                cross_file = 'data/cross-domain/bmes/' + domain + '.bmes'
-                dic_file = 'data/cross-domain/dic/' + domain + '_dict'
+                cross_file = '../SubWordCWS/data/cross-domain/bmes/' + domain + '.bmes'
+                dic_file = '../SubWordCWS/data/cross-domain/dic/' + domain + '_dict'
                 external_pos_list = [functions.load_external_pos(dic_file), {}]
                 for external_pos in external_pos_list:
                     print('evaluate %s: ' % cross_file)
@@ -391,7 +391,7 @@ if __name__ == '__main__':
     parser.add_argument('--status', choices=['train', 'test', 'decode'], help='update algorithm', default='train')
     parser.add_argument('--savemodel', default="data/model/saved_model")
     parser.add_argument('--savedset', help='Dir of saved data setting', default="data/save.dset")
-    parser.add_argument('--source', default="data/cross-domain/pd/pku.pos.pre.bmes")
+    parser.add_argument('--source', default="../SubWordCWS/data/cross-domain/pd/pku.pos.pre.bmes")
     parser.add_argument('--train', default="data/ctb6.0/origin/train.ctb60.char.bmes")
     parser.add_argument('--dev', default="data/ctb6.0/origin/dev.ctb60.char.bmes")
     parser.add_argument('--test', default="data/ctb6.0/origin/test.ctb60.char.bmes")
@@ -399,7 +399,7 @@ if __name__ == '__main__':
     parser.add_argument('--raw')
     parser.add_argument('--loadmodel')
     parser.add_argument('--output')
-    parser.add_argument('--one_layer_attention', default="False")
+    parser.add_argument('--use_attention', default="False")
     parser.add_argument('--cross_domain', default="False")
     parser.add_argument('--external_pos', default=None)
     parser.add_argument('--token_replace_prob', default="data/pd.prob")
@@ -415,6 +415,7 @@ if __name__ == '__main__':
     parser.add_argument('--use_adadelta', type=bool, default=False)
     parser.add_argument('--use_window', default="True")
     parser.add_argument('--use_tencent_dic', default="True")
+    parser.add_argument('--dropout', type=float)
 
     args = parser.parse_args()
 
@@ -427,7 +428,7 @@ if __name__ == '__main__':
     output_file = args.output
 
     # attention
-    one_layer_attention = True if args.one_layer_attention.lower() == 'true' else False
+    use_attention = True if args.use_attention.lower() == 'true' else False
     cross_domain = True if args.cross_domain.lower() == 'true' else False
     if cross_domain:
         train_file = args.source
@@ -491,7 +492,7 @@ if __name__ == '__main__':
             data.HP_batch_size = 1
             data.use_bigram = True
             data.HP_lr = 1e-2
-            data.HP_dropout = 0.1
+            data.HP_dropout = 0.4
             data.HP_iteration = 100
             data_initialization(data, train_file, dev_file, test_file)
 
@@ -504,7 +505,7 @@ if __name__ == '__main__':
             # attention
             data.cross_domain = cross_domain
             data.cross_test = cross_test
-            data.use_attention = one_layer_attention
+            data.use_attention = use_attention
             data.use_san = use_san
             data.use_cnn = args.use_cnn
             data.use_adam = use_adam
