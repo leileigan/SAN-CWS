@@ -12,5 +12,5 @@ CUDA_VISIBLE_DEVICES=1 python main.py \
                        --cross_domain true \
                        --pos_to_idx ../SubWordCWS/data/pos_count \
                        --token_replace_prob ../SubWordCWS/data/pd.prob \
-                       --use_tencent_dic true \
+                       --use_tencent_dic false \
                        --dropout 0.4

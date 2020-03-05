@@ -115,6 +115,7 @@ class Attention(nn.Module):
         batch_size = batch_x.size(0)
         max_len = word_seq_len.max().tolist()
         assert (batch_size == len(word_seq_len.data.tolist()))
+        # print("input context size:", input_context.size())
         for batch_i in range(batch_size):
             #  当前句子长度
             cur_sentence = ''.join(word_text[batch_i])
@@ -127,8 +128,8 @@ class Attention(nn.Module):
             # print('cur sentence pos:', cur_sentence_pos)
 
             all_candidate_words = self.match_all_candidate_words(cur_sentence, cur_sentence_pos, external_pos)
-
-            for cur_char, char_j in enumerate(cur_sentence):
+            # print("all candidate words:", all_candidate_words)
+            for char_j, cur_char in enumerate(cur_sentence):
                 # iterate through each sentence
                 cur_char_embedding = input_context[batch_i][char_j]
 
